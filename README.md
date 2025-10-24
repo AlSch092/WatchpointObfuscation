@@ -53,7 +53,9 @@ The console outputs the addresses of each view, along with the writable view, ma
 
 ## Demonstration
 
-<img width="587" height="328" alt="image" src="https://github.com/user-attachments/assets/2056fbf0-edfd-4903-ba33-bccbc6d188d8" />
+<img width="587" height="328" alt="image" src="https://github.com/user-attachments/assets/2056fbf0-edfd-4903-ba33-bccbc6d188d8" />  
+
+* Despite the value at the address being incremented several times, no instructions are found to be writing or reading it. Since there are 200+ shared views, finding the one which actually triggers watchpoints becomes tedious, and we can't easily find static pointers to this data until we find the writable view  
 
 ## Example output
 
