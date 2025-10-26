@@ -45,11 +45,17 @@ You can try things out for yourself by compiling & running the program, and atta
 
 The console outputs the addresses of each view, along with the writable view, making it easier to find the writable view without going through all 256. In a real scenario, someone would not be given this info, making it difficult to know where the real/writable view is.  
 
+The technique can also be fine-tuned to make it almost impossible to manually trigger watchpoints, at the expense of overhead, by mapping a new view and unmapping the old writable one, then have the new view write to the underlying data. Since we can read our structure members from a read-only view, they won't trigger read instruction watchpoints, and then writes only occur from rotating views.  
+
 ## Downsides
 - Once the 'valuable' structure's base pointer + offsets have been reversed, the technique is no longer useful as you will always be pointed to the writable view, given the static pointer. There may be ways to help combat this however, such as avoiding static singletons or global variables.  
 - Obviously an increase in virtual memory usage, and any overhead associated with shared memory views (at a minimum, a page must be allocated to house a structure which could potentially be only a few bytes large -> Turning the shared view region into a 'memory arena' which houses multiple structs can help with memory efficiency).  
 - Increased complexity, especially when used in game engine code (an LLVM pass might be helpful here, allowing underlying code to be unchanged while the pass implements the shared views)    
 - Destructors of structs/classes won't be called when unmapping views at memory which are housing them.  
+
+## Workarounds  
+- enumerating mapped memory regions which are writable, and contain the same values & positions as the read-only views (requires instrumentation/injected logic, or opening a process handle and RPM, both which are easily detectable)  
+- Kernelmode and hypervisor techniques such as physical page table enumeration, or kernel-level hooks on virtual memory allocations (mostly undetectable from usermode, except for checking if we run under a hypervisor)  
 
 ## Demonstration
 
