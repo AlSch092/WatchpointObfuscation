@@ -61,7 +61,7 @@ The technique can also be fine-tuned to make it almost impossible to manually tr
 
 <img width="587" height="328" alt="image" src="https://github.com/user-attachments/assets/2056fbf0-edfd-4903-ba33-bccbc6d188d8" />  
 
-* Despite the value at the address being incremented several times, no instructions are found to be writing or reading it. Since there are 200+ shared views, finding the one which actually triggers watchpoints becomes tedious, and we can't easily find static pointers to this data until we find the writable view  
+* Despite the value at the address being incremented several times, no instructions are found to be writing or reading it. Since there are 200+ shared views, finding the one which actually triggers watchpoints becomes tedious, and we can't easily find static pointers to this data until we find the writable view. This creates incentive to inject custom logic into the binary (or open a process handle and read memory externally), which creates detectable fragments    
 
 ## Example output
 
